@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myiot',
+    'polls'
 ]
 
 MIDDLEWARE = [
@@ -128,3 +131,38 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# LOGGING
+PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": PROJECT_ROOT + "/logs/django.log",
+            "formatter": "verbose",
+            "maxBytes": 1024 * 1024 * 1,
+            "backupCount": 5,
+        },
+    },
+    "formatters": {
+        "verbose": {
+            "format": "\t".join(
+                [
+                    "[%(levelname)s]",
+                    "%(asctime)s",
+                    "%(name)s.%(funcName)s:%(lineno)s",
+                    "%(message)s",
+                ]
+            )
+        },
+    },
+    "loggers": {
+        "file": {
+            "handlers": ["file"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": True,
+        },
+    },
+}
