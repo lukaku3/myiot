@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myiot',
     'polls.apps.PollsConfig',
+    'sensor.apps.SensorConfig',
+    # 'temp',
 ]
 
 MIDDLEWARE = [
